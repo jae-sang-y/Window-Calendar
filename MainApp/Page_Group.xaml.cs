@@ -63,7 +63,7 @@ namespace MainApp
         }
         void Delete_Group_Menu(object sender, EventArgs e)
         {
-            int id = (int)(((MenuItem)sender).Tag);
+            int id = (int)(((Button)sender).Tag);
 
             foreach (Group g in ListView_Output.Items)
             {

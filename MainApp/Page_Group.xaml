@@ -43,12 +43,11 @@
                                             <ContextMenu>
                                                 <MenuItem Header="Manage Group Member" Tag="{Binding id}" Click="Manage_Group_Member_Menu"/>
                                                 <MenuItem Header="Edit Group Name" Tag="{Binding id}" Click="Edit_Group_Name_Menu"/>
-                                                <MenuItem Header="Delete Group" Tag="{Binding id}" Click="Delete_Group_Menu"/>
                                             </ContextMenu>
                                         </TextBox.ContextMenu>
                                     </TextBox>
 
-                                    <Button Grid.Column="1" Height="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" Tag="{Binding id}" Foreground="#00000000" Background="#00000000" BorderThickness="0">
+                                    <Button Grid.Column="1" Height="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" Tag="{Binding id}" Foreground="#00000000" Background="#00000000" BorderThickness="0" Click="Delete_Group_Menu">
                                         <StackPanel>
                                             <Image Height="32" Source="delete.png" Stretch="Fill" HorizontalAlignment="Stretch"/>
                                         </StackPanel>
