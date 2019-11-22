@@ -1,0 +1,73 @@
+﻿<Window x:Class="MainApp.WorkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainApp"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        Title="WorkWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition Width="47*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="0,0,0,0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="65" />
+                <RowDefinition Height="100*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" x:Name="Banner_Panel"/>
+            <Label Grid.Row="0" Background="#FF8FC2D6" Foreground="#FFFFFF" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="30" Content="Dae Ma Calendar"/>
+
+            <Button Grid.Row="0" Height="55" Width="55" Margin="734,5,10,5" Background="#00000000" BorderThickness="0" Click="Open_Mail_Button" HorizontalAlignment="Right">
+                <StackPanel>
+                    <Image Source="Untitled-1.png"  VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            
+            <Grid Margin="0,0,0,0" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100*" />
+                </Grid.ColumnDefinitions>
+                <Grid Margin="0,0,0,0" Grid.Column="0" Background="#FFE8E8E8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100*" />
+                        <RowDefinition Height="100*" />
+                        <RowDefinition Height="100*" />
+                        <RowDefinition Height="100*" />
+                        <RowDefinition Height="100*" />
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Content="메인" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"  Background="#FFF7F7F7" Click="Show_Main_Button"/>
+                    <Button Grid.Row="1" Content="일정" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"  Background="#FFF7F7F7" Click="Show_Plan_Button"/>
+                    <Button Grid.Row="2" Content="공지" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"  Background="#FFF7F7F7" Click="Show_Notify_Button"/>
+                    <Button Grid.Row="3" Content="시간표" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" Background="#FFF7F7F7" Click="Show_Time_Button"/>
+                    <Button Grid.Row="4" Content="그룹" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20"  Background="#FFF7F7F7" Click="Show_Group_Button"/>
+                </Grid>
+
+                <Frame Grid.Column="1" x:Name="Main_Panel">
+                    <Frame.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <LinearGradientBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                    <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                    <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </LinearGradientBrush.RelativeTransform>
+                            <GradientStop Color="#FFE2E2E2" Offset="0"/>
+                            <GradientStop Color="#FFF9F9F9" Offset="0.011"/>
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                </Frame>
+            </Grid>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="100" Margin="-151,53,0,0" VerticalAlignment="Top" Width="100"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,66 @@
+﻿<Page x:Class="MainApp.Page_Group"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MainApp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Page_Group">
+
+    <Grid Width="800" Height="450">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="402"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" HorizontalAlignment="Stretch" Height="359" Margin="10,16,10,0" VerticalAlignment="Top" x:Name="ListView_Output" Background="#EEEEEE" Padding="0,10,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,0,0,3" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Grid.Column="0" Fill="Orange" Width="10" HorizontalAlignment="Left"/>
+                        <Grid Grid.Column="1" Background="White" HorizontalAlignment="Left" Width="757">
+                            <Grid.Effect>
+                                <DropShadowEffect Opacity="0.2"/>
+                            </Grid.Effect>
+                            <Grid Margin="3,3,3,3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="32"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding title}" Tag="{Binding id}" FontSize="30" Width="757" BorderBrush="#00000000" IsReadOnly="True">
+                                        <TextBox.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Manage Group Member" Tag="{Binding id}" Click="Manage_Group_Member_Menu"/>
+                                                <MenuItem Header="Edit Group Name" Tag="{Binding id}" Click="Edit_Group_Name_Menu"/>
+                                                <MenuItem Header="Delete Group" Tag="{Binding id}" Click="Delete_Group_Menu"/>
+                                            </ContextMenu>
+                                        </TextBox.ContextMenu>
+                                    </TextBox>
+
+                                    <Button Grid.Column="1" Height="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" Tag="{Binding id}" Foreground="#00000000" Background="#00000000" BorderThickness="0">
+                                        <StackPanel>
+                                            <Image Height="32" Source="delete.png" Stretch="Fill" HorizontalAlignment="Stretch"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Grid.Row="1" Width="777" Height="32" Content="Add Group" Click="Add_Group_Button"/>
+    </Grid>
+</Page>

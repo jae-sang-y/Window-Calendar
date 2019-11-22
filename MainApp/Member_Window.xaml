@@ -1,0 +1,68 @@
+﻿<Window x:Class="MainApp.Member_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainApp"
+        mc:Ignorable="d"
+        Title="Member_Window" Height="389.032" Width="482.581" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="74*"/>
+            <ColumnDefinition Width="21*"/>
+        </Grid.ColumnDefinitions>
+        <ListView HorizontalAlignment="Stretch" Height="300" Margin="10,12,10,0" VerticalAlignment="Top" x:Name="ListView_Output" Background="#EEEEEE" Padding="0,10,0,0" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" >
+            <ListView.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-0.291"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-0.963"/>
+                </TransformGroup>
+            </ListView.RenderTransform>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,0,0,3" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Grid.Column="0" Fill="Orange" Width="10" HorizontalAlignment="Left"/>
+                        <Grid Grid.Column="1" Background="White" HorizontalAlignment="Left" Width="400">
+                            <Grid.Effect>
+                                <DropShadowEffect Opacity="0.2"/>
+                            </Grid.Effect>
+                            <Grid Margin="3,3,3,3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Grid.Row="0" TextWrapping="Wrap" Text="{Binding classof}" FontSize="20" BorderBrush="#00000000" IsReadOnly="True"/>
+                                    <TextBox Grid.Row="1" TextWrapping="Wrap" Text="{Binding name}" Tag="{Binding id}" FontSize="30" BorderBrush="#00000000" IsReadOnly="True">
+                                        <TextBox.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Tag="{Binding id}" Header="Kick Member" Click="Kick_Member_Menu"/>
+                                                <MenuItem Tag="{Binding id}" Header="Manage Permission" Click="Manage_Permission_Menu"/>
+                                            </ContextMenu>
+                                        </TextBox.ContextMenu>
+                                    </TextBox>
+                                    <TextBox Grid.Row="2" TextWrapping="Wrap" Text="{Binding state}" FontSize="10" Foreground="LightGray" BorderBrush="#00000000" IsReadOnly="True" HorizontalContentAlignment="Right"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Content="Add Member" HorizontalAlignment="Left" Margin="10,312,0,0" VerticalAlignment="Top" Width="449" Grid.ColumnSpan="2" Height="39" Click="Add_Member_Button"/>
+    </Grid>
+</Window>
