@@ -35,9 +35,17 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="32"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding title}" Tag="{Binding id}" FontSize="30" Width="700" BorderBrush="#00000000" IsReadOnly="True" MouseDoubleClick="Show_Notify_Button_Click"/>
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*"/>
+                                            <RowDefinition Height="1*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBox Grid.Row="0" TextWrapping="Wrap" Text="{Binding noticeTitle}" Tag="{Binding noticeId}" FontSize="30" Width="668" BorderBrush="#00000000" IsReadOnly="True" MouseDoubleClick="Show_Notify_Button_Click"/>
+                                        <TextBox Grid.Row="1" TextWrapping="Wrap" Text="{Binding subText}" Tag="{Binding noticeId}" HorizontalContentAlignment="Right" Foreground="LightGray" FontSize="15" Width="668" BorderBrush="#00000000" IsReadOnly="True" MouseDoubleClick="Show_Notify_Button_Click"/>
+                                    </Grid>
+                                    
 
-                                    <Button Grid.Column="1" Height="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Delete_Notify_Button_Click" Tag="{Binding id}" Foreground="#00000000" Background="#00000000" BorderThickness="0">
+                                    <Button Grid.Column="1" Height="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Delete_Notify_Button_Click" Tag="{Binding noticeId}" Foreground="#00000000" Background="#00000000" BorderThickness="0">
                                         <StackPanel>
                                             <Image Height="32" Source="delete.png" Stretch="Fill" HorizontalAlignment="Stretch"/>
                                         </StackPanel>

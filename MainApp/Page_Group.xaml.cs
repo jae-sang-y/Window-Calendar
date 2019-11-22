@@ -17,11 +17,6 @@ using System.Windows.Shapes;
 
 namespace MainApp
 {
-    public class Group
-    {
-        public int id { get; set; }
-        public string title { get; set; }
-    }
 
 
     /// <summary>
@@ -29,14 +24,10 @@ namespace MainApp
     /// </summary>
     public partial class Page_Group : Page
     {
+        ServerConnector.ServerConnector sc = ServerConnector.ServerConnector.GetInstace();
         public Page_Group()
         {
             InitializeComponent();
-            ListView_Output.Items.Add(new Group()
-            {
-                id = 0,
-                title = "마동석과 친구들"
-            });
         }
 
         void Manage_Group_Member_Menu(object sender, EventArgs e)
@@ -45,46 +36,100 @@ namespace MainApp
         }
         void Edit_Group_Name_Menu(object sender, EventArgs e)
         {
-            string name = Interaction.InputBox("그룹의 새 이름을 적어주세요.", "", "");
-            if (name == "") return;
-            int id = (int)(((MenuItem)sender).Tag);
-
-            foreach (Group g in ListView_Output.Items)
-            {
-                if (g.id == id)
-                {
-                    g.title = name;
-                    break;
-                }
-            }
-
-            ICollectionView view = CollectionViewSource.GetDefaultView(ListView_Output.Items);
-            view.Refresh();
-        }
-        void Delete_Group_Menu(object sender, EventArgs e)
-        {
             int id = (int)(((Button)sender).Tag);
-
-            foreach (Group g in ListView_Output.Items)
+            try
             {
-                if (g.id == id)
+                string title = Interaction.InputBox("그룹의 새 이름을 적어주세요.", "", "");
+                if (title == "") return;
+                var obj = new ServerConnector.Room()
                 {
-                    ListView_Output.Items.Remove(g);
-                    break;
+                    calendarId = sc.student.myCalendarId,
+                    roomTitle = title,
+                    roomId = id
+                };
+                string pdata = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+
+                System.Net.HttpStatusCode status;
+                string res;
+                (status, res) = sc.SendRequest("room", "POST", pdata, $"loginUserId: {sc.student.loginUserId}");
+
+                if (status == System.Net.HttpStatusCode.OK)
+                {
+                    List<ServerConnector.Room> rooms = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServerConnector.Room>>(res);
+
+                    ListView_Output.Items.Clear();
+                    foreach (ServerConnector.Room not in rooms)
+                    {
+                        ListView_Output.Items.Add(not);
+                    }
                 }
+                else MessageBox.Show("그룹들을 갱신하는데 실패했습니다.");
+            }
+            catch (System.Net.WebException ex)
+            {
+                MessageBox.Show("그룹들을 갱신하는데 실패했습니다.\n" + ex.Message);
             }
         }
 
         void Add_Group_Button(object sender, EventArgs e)
         {
-
-            string name = Interaction.InputBox("만들 그룹의 이름을 적어주세요.", "", "");
-            if (name == "") return;
-            ListView_Output.Items.Add(new Group()
+            try
             {
-                id = 1,
-                title = name
-            });
+                string title = Interaction.InputBox("그룹의 이름을 적어주세요.", "", "");
+                if (title == "") return;
+                var obj = new ServerConnector.Room()
+                {
+                    calendarId = sc.student.myCalendarId,
+                    roomTitle = title
+                };
+                string pdata = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                pdata = pdata.Replace("\"roomId\":0,", "");
+
+                System.Net.HttpStatusCode status;
+                string res;
+                (status, res) = sc.SendRequest("room", "POST", pdata, $"loginUserId: {sc.student.loginUserId}");
+
+                if (status == System.Net.HttpStatusCode.OK)
+                {
+                    List<ServerConnector.Room> rooms = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServerConnector.Room>>(res);
+
+                    ListView_Output.Items.Clear();
+                    foreach (ServerConnector.Room not in rooms)
+                    {
+                        ListView_Output.Items.Add(not);
+                    }
+                }
+                else MessageBox.Show("그룹들을 추가하는데 실패했습니다.");
+            }
+            catch (System.Net.WebException ex)
+            {
+                MessageBox.Show("그룹들을 추가하는데 실패했습니다.\n" + ex.Message);
+            }
+        }
+        public void Refresh()
+        {
+            try
+            {
+                System.Net.HttpStatusCode status;
+                string res;
+                (status, res) = sc.SendRequest("room", "GET", null, $"loginUserId: {sc.student.loginUserId}");
+
+                if (status == System.Net.HttpStatusCode.OK)
+                {
+                    List<ServerConnector.Room> rooms = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServerConnector.Room>>(res);
+
+                    ListView_Output.Items.Clear();
+                    foreach (ServerConnector.Room not in rooms)
+                    {
+                        ListView_Output.Items.Add(not);
+                    }
+                }
+                else MessageBox.Show("그룹들을 불러오는데 실패했습니다.");
+            }
+            catch (System.Net.WebException ex)
+            {
+                MessageBox.Show("그룹들을 불러오는데 실패했습니다.\n" + ex.Message);
+            }
         }
     }
 }

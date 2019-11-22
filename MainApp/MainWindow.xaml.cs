@@ -58,7 +58,7 @@ namespace MainApp
                 {
                     sc.student = JsonConvert.DeserializeObject<ServerConnector.Student>(res);
                     LoginError_Output.Content = "로그인 성공";
-
+                    
                     var ExampleWindowObject = new WorkWindow();
                     ExampleWindowObject.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                     ExampleWindowObject.Show();

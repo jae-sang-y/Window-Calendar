@@ -26,8 +26,8 @@ namespace ServerConnector
             return instance;
         }
 
-        public static int Timeout = 10;
-        public Tuple<HttpStatusCode, string> SendRequest(string link, string method, string pdata)
+        public static int Timeout = 3;
+        public Tuple<HttpStatusCode, string> SendRequest(string link, string method, string pdata = null, string header = null)
         {
             string link12 = $@"http://192.168.137.1:8080/{ link }";
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create($@"http://192.168.137.1:8080/{ link }");
@@ -38,12 +38,18 @@ namespace ServerConnector
             //string postData =
             //    "{\"admin\":true,\"classOf\": 0,\"iconIndex\":0,\"id\":\"apple03550\",\"pw\":\"apple03550\",\"myCalendarId\":0}"
             //;
-            byte[] data = Encoding.UTF8.GetBytes(pdata);
-            req.ContentLength = data.Length;
 
-            using (Stream requestStream = req.GetRequestStream())
+            if (header != null) req.Headers.Add(header);
+
+            if (pdata != null)
             {
-                requestStream.Write(data, 0, data.Length);
+                byte[] data = Encoding.UTF8.GetBytes(pdata);
+                req.ContentLength = data.Length;
+
+                using (Stream requestStream = req.GetRequestStream())
+                {
+                    requestStream.Write(data, 0, data.Length);
+                }
             }
                     
             WebResponse response = req.GetResponse();

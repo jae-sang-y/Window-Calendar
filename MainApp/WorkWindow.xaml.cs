@@ -25,11 +25,16 @@ namespace MainApp
         Page_TimeTable page_timetable = new Page_TimeTable();
         Page_Group page_group = new Page_Group();
         MailWindow wind_mail = new MailWindow();
+
+        ServerConnector.ServerConnector sc = ServerConnector.ServerConnector.GetInstace();
+
         public WorkWindow()                      
         {
             InitializeComponent();
             Main_Panel.NavigationUIVisibility = System.Windows.Navigation.NavigationUIVisibility.Hidden;
             Main_Panel.Navigate(page_main);
+
+            sc.student.schoolName = "dsm";
 
             wind_mail.IsEnabled = false;
         }
@@ -42,18 +47,22 @@ namespace MainApp
         void Show_Plan_Button(object sender, EventArgs e)
         {
             Main_Panel.Navigate(page_calendar);
+            page_calendar.Refresh();
         }
         void Show_Notify_Button(object sender, EventArgs e)
         {
             Main_Panel.Navigate(page_notify);
+            page_notify.Refresh();
         }
         void Show_Time_Button(object sender, EventArgs e)
         {
             Main_Panel.Navigate(page_timetable);
+            page_timetable.Refresh();
         }
         void Show_Group_Button(object sender, EventArgs e)
         {
             Main_Panel.Navigate(page_group);
+            page_group.Refresh();
         }
 
         private void Open_Mail_Button(object sender, RoutedEventArgs e)

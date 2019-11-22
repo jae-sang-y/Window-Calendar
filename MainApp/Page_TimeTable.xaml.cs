@@ -20,6 +20,7 @@ namespace MainApp
     /// </summary>
     public partial class Page_TimeTable : Page
     {
+        ServerConnector.ServerConnector sc = ServerConnector.ServerConnector.GetInstace();
         Label[][] table;
         public Page_TimeTable()
         {
@@ -84,57 +85,92 @@ namespace MainApp
             }
 
 
-            table[0][0].Content = "자율";
-            table[0][1].Content = "C#";
-            table[0][2].Content = "->";
-            table[0][3].Content = "->";
-            table[0][4].Content = "->";
-            table[0][5].Content = "체육";
-            table[0][6].Content = "자구";
-            table[0][7].Content = "->";
-            table[0][8].Content = "역사";
+            //table[0][0].Content = "자율";
+            //table[0][1].Content = "C#";
+            //table[0][2].Content = "->";
+            //table[0][3].Content = "->";
+            //table[0][4].Content = "->";
+            //table[0][5].Content = "체육";
+            //table[0][6].Content = "자구";
+            //table[0][7].Content = "->";
+            //table[0][8].Content = "역사";
 
 
-            table[1][0].Content = "운체";
-            table[1][1].Content = "->";
-            table[1][2].Content = "체육";
-            table[1][3].Content = "DB";
-            table[1][4].Content = "->";
-            table[1][5].Content = "국어";
-            table[1][6].Content = "국사";
-            table[1][7].Content = "->";
-            table[1][8].Content = "영어";
+            //table[1][0].Content = "운체";
+            //table[1][1].Content = "->";
+            //table[1][2].Content = "체육";
+            //table[1][3].Content = "DB";
+            //table[1][4].Content = "->";
+            //table[1][5].Content = "국어";
+            //table[1][6].Content = "국사";
+            //table[1][7].Content = "->";
+            //table[1][8].Content = "영어";
 
 
-            table[2][0].Content = "수학";
-            table[2][1].Content = "->";
-            table[2][2].Content = "영어";
-            table[2][3].Content = "리눅";
-            table[2][4].Content = "->";
-            table[2][5].Content = "->";
-            table[2][6].Content = "->";
-            table[2][7].Content = "국사";
-            table[2][8].Content = "국어";
+            //table[2][0].Content = "수학";
+            //table[2][1].Content = "->";
+            //table[2][2].Content = "영어";
+            //table[2][3].Content = "리눅";
+            //table[2][4].Content = "->";
+            //table[2][5].Content = "->";
+            //table[2][6].Content = "->";
+            //table[2][7].Content = "국사";
+            //table[2][8].Content = "국어";
 
-            table[3][0].Content = "공작";
-            table[3][1].Content = "->";
-            table[3][2].Content = "->";
-            table[3][3].Content = "임베\n디드";
-            table[3][4].Content = "->";
-            table[3][5].Content = "->";
-            table[3][6].Content = "->";
-            table[3][7].Content = "토익";
-            table[3][8].Content = "->";
+            //table[3][0].Content = "공작";
+            //table[3][1].Content = "->";
+            //table[3][2].Content = "->";
+            //table[3][3].Content = "임베\n디드";
+            //table[3][4].Content = "->";
+            //table[3][5].Content = "->";
+            //table[3][6].Content = "->";
+            //table[3][7].Content = "토익";
+            //table[3][8].Content = "->";
 
-            table[4][0].Content = "진로";
-            table[4][1].Content = "->";
-            table[4][2].Content = "동아리";
-            table[4][3].Content = "->";
-            table[4][4].Content = "->";
-            table[4][5].Content = "->";
-            table[4][6].Content = "체육";
-            table[4][7].Content = "청소";
-            table[4][8].Content = "->";
+            //table[4][0].Content = "진로";
+            //table[4][1].Content = "->";
+            //table[4][2].Content = "동아리";
+            //table[4][3].Content = "->";
+            //table[4][4].Content = "->";
+            //table[4][5].Content = "->";
+            //table[4][6].Content = "체육";
+            //table[4][7].Content = "청소";
+            //table[4][8].Content = "->";
+        }
+        public void Refresh()
+        {
+            try
+            {
+                System.Net.HttpStatusCode status;
+                string res;
+                (status, res) = sc.SendRequest("timeTable", "GET", null, $"loginUserId: {sc.student.loginUserId}");
+
+                if (status == System.Net.HttpStatusCode.OK)
+                {
+                    List<ServerConnector.SchoolClass> classes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServerConnector.SchoolClass>>(res);
+
+                    for (int x = 0; x < 5; ++x)
+                    {
+                        for (int y = 0; y < 9; ++y)
+                        {
+                            table[x][y].Content = "";
+                        }
+                    }
+
+                    foreach (ServerConnector.SchoolClass cls in classes)
+                    {
+                        if (cls.schoolName == sc.student.schoolName && (cls.timeTableIndex / 100 == sc.student.classOf / 100))
+                        {
+                            table[(cls.timeTableIndex / 10) % 10 - 1][cls.timeTableIndex % 10 - 1].Content = cls.subject;
+                        }
+                    }
+                }
+                else MessageBox.Show("시간표를 불러오는데 실패했습니다.");
+            }
+            catch (System.Net.WebException ex)
+            {
+                MessageBox.Show("시간표를 불러오는데 실패했습니다.\n" + ex.Message);
+            }
         }
     }
 }

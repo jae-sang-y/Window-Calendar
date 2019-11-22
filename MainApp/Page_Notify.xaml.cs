@@ -16,43 +16,15 @@ using Microsoft.VisualBasic;
 
 namespace MainApp
 {
-    public class Notify
-    {
-        public int id { get; set; }
-        public string title { get; set; }
-        public string desc { get; set; }
-
-    }
-
     /// <summary>
     /// Interaction logic for Page_Notify.xaml
     /// </summary>
     public partial class Page_Notify : Page
     {
+        ServerConnector.ServerConnector sc = ServerConnector.ServerConnector.GetInstace();
         public Page_Notify()
         {
             InitializeComponent();
-
-            ListView_Output.Items.Add(new Notify()
-            {
-                title = "경쟁게임의 등급이 곧 발표됩니다.",
-                desc="자세한 정보는 leagueoflegends.co.kr 에서 확인하세요.",
-                id = 0
-            });
-
-            ListView_Output.Items.Add(new Notify()
-            {
-                title = "택견 단증, 단기 속성반 모집합니다.",
-                desc = "희망자는 아침 6시까지 대니산 정상에서 한국택견 부회장님을 찾아주세요. ",
-                id = 1
-            });
-
-            ListView_Output.Items.Add(new Notify()
-            {
-                title = "학생참여 졸업식 행사 진행 위원회 모집안내",
-                desc = "학생참여 행사 진행 위원회 위원을 모집하고 있습니다.\n연락처 011-0111-11110\n우대사항: 이전에 행사 진행을 해본 자.",
-                id = 2
-            });
         }
 
 
@@ -61,25 +33,72 @@ namespace MainApp
             string title = Interaction.InputBox("공지의 제목을 적어주세요.", "", "");
             if (title == "") return;
             string desc = Interaction.InputBox("공지의 본문을 적어주세요.", "", "");
-            ListView_Output.Items.Add(new Notify()
+            string startdate = Interaction.InputBox("공지의 시작기간을 적어주세요.", "", "19/11/12:1교시");
+            string enddate = Interaction.InputBox("공지의 종료기간을 적어주세요.", "", "19/11/12:5교시");
+
+            try
             {
-                title = title,
-                desc = desc,
-                id = ListView_Output.Items.Count
-            });
+                var tmp_not = new ServerConnector.Notify()
+                {
+                    noticeTitle = title,
+                    noticeContent = desc,
+                    startDate = startdate,
+                    endDate = enddate
+                };
+                System.Net.HttpStatusCode status;
+                string pdata = Newtonsoft.Json.JsonConvert.SerializeObject(tmp_not);
+                pdata = pdata.Replace("\"noticeId\":0,", "");
+
+                string res;
+                (status, res) = sc.SendRequest($"notice", "POST", pdata, $"loginUserId: {sc.student.loginUserId}");
+
+                if (status == System.Net.HttpStatusCode.OK)
+                {
+                    List<ServerConnector.Notify> notifies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServerConnector.Notify>>(res);
+
+                    ListView_Output.Items.Clear();
+                    foreach (ServerConnector.Notify not in notifies)
+                    {
+                        not.subText = $"{not.startDate}~{not.endDate}";
+                        ListView_Output.Items.Add(not);
+                    }
+                }
+                else MessageBox.Show("공지를 삭제하는데 실패했습니다.");
+            }
+            catch (System.Net.WebException ex)
+            {
+                MessageBox.Show("공지를 삭제하는데 실패했습니다.\n" + ex.Message);
+            }
+
         }
 
         private void Delete_Notify_Button_Click(object sender, RoutedEventArgs e)
         {
             int id = (int)((Button)sender).Tag;
-            foreach (object obj in ListView_Output.Items)
+            try
             {
-                if (((Notify)obj).id == id)
+                System.Net.HttpStatusCode status;
+                string res;
+                (status, res) = sc.SendRequest($"notice/{id}", "DELETE", null, $"loginUserId: {sc.student.loginUserId}");
+
+                if (status == System.Net.HttpStatusCode.OK)
                 {
-                    ListView_Output.Items.Remove(obj);
-                    break;
+                    List<ServerConnector.Notify> notifies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServerConnector.Notify>>(res);
+
+                    ListView_Output.Items.Clear();
+                    foreach (ServerConnector.Notify not in notifies)
+                    {
+                        not.subText = $"{not.startDate}~{not.endDate}";
+                        ListView_Output.Items.Add(not);
+                    }
                 }
+                else MessageBox.Show("공지를 삭제하는데 실패했습니다.");
             }
+            catch (System.Net.WebException ex)
+            {
+                MessageBox.Show("공지를 삭제하는데 실패했습니다.\n" + ex.Message);
+            }
+
         }
 
         private void Show_Notify_Button_Click(object sender, MouseButtonEventArgs e)
@@ -88,14 +107,40 @@ namespace MainApp
             string desc = "undefine";
             foreach (object obj in ListView_Output.Items)
             {
-                if (((Notify)obj).id == id)
+                if (((ServerConnector.Notify)obj).noticeId == id)
                 {
-                    desc = ((Notify)obj).desc;
+                    desc = ((ServerConnector.Notify)obj).noticeContent;
                     break;
                 }
             }
             MessageBox.Show(desc);
+        }
 
+        public void Refresh()
+        {
+            try
+            {
+                System.Net.HttpStatusCode status;
+                string res;
+                (status, res) = sc.SendRequest("notice", "GET", null, $"loginUserId: {sc.student.loginUserId}");
+
+                if (status == System.Net.HttpStatusCode.OK)
+                {
+                    List<ServerConnector.Notify> notifies = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ServerConnector.Notify>>(res);
+
+                    ListView_Output.Items.Clear();
+                    foreach (ServerConnector.Notify not in notifies)
+                    {
+                        not.subText = $"{not.startDate}~{not.endDate}";
+                        ListView_Output.Items.Add(not);                        
+                    }
+                }
+                else MessageBox.Show("공지를 불러오는데 실패했습니다.");
+            }
+            catch (System.Net.WebException ex)
+            {
+                MessageBox.Show("공지를 불러오는데 실패했습니다.\n" + ex.Message);
+            }
         }
     }
 }

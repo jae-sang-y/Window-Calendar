@@ -45,6 +45,18 @@ namespace ServerConnector
             get;
             set;
         }
+        [JsonProperty(PropertyName = "loginUserId")]
+        public int loginUserId
+        {
+            get;
+            set;
+        }
 
+        [JsonProperty(PropertyName = "schoolName")]
+        public string schoolName
+        {
+            get;
+            set;
+        }
     }
 }

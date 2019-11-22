@@ -22,9 +22,9 @@
             <Grid Grid.Row="0" x:Name="Banner_Panel"/>
             <Label Grid.Row="0" Background="#FF8FC2D6" Foreground="#FFFFFF" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="30" Content="Dae Ma Calendar"/>
 
-            <Button Grid.Row="0" Height="55" Width="55" Margin="734,5,10,5" Background="#00000000" BorderThickness="0" Click="Open_Mail_Button" HorizontalAlignment="Right">
+            <Button Grid.Row="0" Height="55" Width="55" Margin="734,5,10,5" Background="#00000000" BorderThickness="0" HorizontalAlignment="Right">
                 <StackPanel>
-                    <Image Source="Untitled-1.png"  VerticalAlignment="Center" />
+                    <Image Source="Untitled-1.png"  VerticalAlignment="Center" IsEnabled="False" />
                 </StackPanel>
             </Button>
             

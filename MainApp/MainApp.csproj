@@ -80,6 +80,10 @@
     <Compile Include="Page_TimeTable.xaml.cs">
       <DependentUpon>Page_TimeTable.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ServerConector\Notify.cs" />
+    <Compile Include="ServerConector\Room.cs" />
+    <Compile Include="ServerConector\Schedule.cs" />
+    <Compile Include="ServerConector\SchoolClass.cs" />
     <Compile Include="WorkWindow.xaml.cs">
       <DependentUpon>WorkWindow.xaml</DependentUpon>
     </Compile>
